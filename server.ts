@@ -136,9 +136,9 @@ async function initClickHouse(): Promise<void> {
       context    String
     )
     ENGINE = MergeTree()
-    PARTITION BY toYYYYMM(toDateTime(timestamp))
+    PARTITION BY toYYYYMM(parseDateTimeBestEffort(timestamp))
     ORDER BY (timestamp, service, layer)
-    TTL toDateTime(timestamp) + INTERVAL 90 DAY
+    TTL parseDateTimeBestEffort(timestamp) + INTERVAL 90 DAY
   `);
 
   console.log('[SENTINEL] ClickHouse ready ✓');
